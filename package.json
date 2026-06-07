@@ -1,0 +1,70 @@
+{
+  "name": "blitz-app-linux",
+  "version": "0.1.0",
+  "description": "Linux desktop port foundation for Blitz App Store Connect automation.",
+  "main": "out/electron/main.cjs",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -p tsconfig.json && vite build && npm run build:electron",
+    "build:electron": "tsc -p electron/tsconfig.json && node scripts/rename-electron-output.mjs",
+    "start": "npm run build && electron .",
+    "dist:linux": "npm run build && electron-builder --linux AppImage deb",
+    "mcp": "tsx src/mcp/server.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p electron/tsconfig.json"
+  },
+  "keywords": [
+    "blitz",
+    "linux",
+    "app-store-connect",
+    "mcp",
+    "electron"
+  ],
+  "author": "Blitz Linux contributors",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "electron": "^39.2.6",
+    "electron-builder": "^26.0.12",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.7"
+  },
+  "build": {
+    "appId": "dev.blitz.linux",
+    "productName": "Blitz",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*",
+      "build/**/*",
+      "package.json"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "tar.gz"
+      ]
+    },
+    "deb": {
+      "depends": [
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xdg-utils"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3"
+  }
+}
